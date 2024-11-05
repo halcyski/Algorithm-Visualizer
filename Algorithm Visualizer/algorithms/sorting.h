@@ -8,4 +8,4 @@ void mergeSort(std::vector<int>& array, int left, int right);
 
 int partition(std::vector<int>& array, int low, int high);
 
-void quicksort(std::vector<int>& array, int low, int high);
+void quickSort(std::vector<int>& array, int low, int high);
