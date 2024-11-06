@@ -4,7 +4,7 @@
 // bubbleSort : [Vector Int]& -> Void
 // Purpose: Takes the address of an array of int elements and sorts
 // the array numerically in ascending order using a bubble sort algorithm.
-void bubbleSort(std::vector<int>& array)
+void bubbleSort(sf::RenderWindow& window, std::vector<int>& array)
 {
     // Assign an int variable equal to the size of the array, n.
     int elems = array.size();
@@ -29,6 +29,8 @@ void bubbleSort(std::vector<int>& array)
                 array[j] = temp;
                 // A swap has occured
                 swappedFlag = true;
+                drawBars(window, array);
+                delay(0);
             }
         }
         // If no swaps occured (array is already sorted) then break out of the algorithm
@@ -42,7 +44,7 @@ void bubbleSort(std::vector<int>& array)
 // Purpose: merges two subarrays of the main array[]
 // The first array is array[left, mid] and the second is array[mid, right]
 // left, mid, and right are the indices of the specified arrays to merge.
-void merge(std::vector<int>& array, int left, int mid, int right)
+void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid, int right)
 {
     int leftSize = mid - left + 1; // size of left side of array (left->mid)
     int rightSize = right - mid; // size of right side of array (mid->right)
@@ -97,7 +99,7 @@ void merge(std::vector<int>& array, int left, int mid, int right)
 // mergeSort : [Vector Int]& Int Int -> Void
 // Purpose: divides an array into subarrays until they can no longer be divided
 // and merges them back together in a numerically sorted order.
-void mergeSort(std::vector<int>& array, int left, int right)
+void mergeSort(sf::RenderWindow& window, std::vector<int>& array, int left, int right)
 {
     if (left >= right)
     {
@@ -106,18 +108,18 @@ void mergeSort(std::vector<int>& array, int left, int right)
 
     int mid = left + (right - left) / 2;
     // Sort left size
-    mergeSort(array, left, mid);
+    mergeSort(window, array, left, mid);
     // Sort right side
-    mergeSort(array, mid + 1, right);
+    mergeSort(window, array, mid + 1, right);
     // Merge all
-    merge(array, left, mid, right);
+    merge(window, array, left, mid, right);
 }
 
 
 
 // partition : [Vector Int]& Int Int -> Int
 // Purpose: returns a new pivot position from an array 
-int partition(std::vector<int>& array, int low, int high)
+int partition(sf::RenderWindow& window, std::vector<int>& array, int low, int high)
 {
     // Choose the pivot
     // Some methods of choosing the pivot include:
@@ -152,20 +154,49 @@ int partition(std::vector<int>& array, int low, int high)
 }
 
 // quickSort : [Vector Int]& Int Int -> Void
-// Purpose:
-void quickSort(std::vector<int>& array, int low, int high)
+// Purpose: QuickSort algorithm that takes an array of data, a low and a high and sorts
+// the array using quickSort math.
+void quickSort(sf::RenderWindow& window, std::vector<int>& array, int low, int high)
 {
     if (low < high)
     {
-        int partitionIndex = partition(array, low, high);
+        int partitionIndex = partition(window, array, low, high);
 
         // Recursion calls for smaller elements
         // and greater or equal elements
-        quickSort(array, low, partitionIndex - 1);
-        quickSort(array, partitionIndex + 1, high);
+        quickSort(window, array, low, partitionIndex - 1);
+        quickSort(window, array, partitionIndex + 1, high);
     }
 }
 
+// maxElement : [Vector Int] -> Int
+// returns the largest element in a list of integers
+int maxElement(std::vector<int> array)
+{
+    int largest = std::numeric_limits<int>::min();
 
+    for (int i = 0; i < array.size(); i++)
+    {
+        if (array[i] > largest)
+        {
+            largest = array[i];
+        }      
+    }
+    return largest;
+}
 
+// randArray : Int -> [Vector Int] 
+// takes an int representing a number of elements and returns an
+// array of integers with random values.
+std::vector<int> randArray(int numElements)
+{
+    std::vector<int> array = std::vector<int>(numElements);
+    srand(time(0)); // generate random seed for rand()
 
+    for (int i = 0; i < numElements; i++)
+    {
+        array[i] = rand() % 500; // 1000 as a default max value
+    }
+
+    return array;
+}

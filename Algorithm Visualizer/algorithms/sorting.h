@@ -1,11 +1,26 @@
+#ifndef SORTING_H
+#define SORTING_H
+
 #include <vector>
+#include <SFML/Graphics.hpp>
+#include <cstdlib>
 
-void bubbleSort(std::vector<int>& array);
+#include "../sfml/graphics.h"
+#include "../threading/delay.h"
 
-void merge(std::vector<int>& array, int left, int mid, int right);
 
-void mergeSort(std::vector<int>& array, int left, int right);
+void bubbleSort(sf::RenderWindow& window, std::vector<int>& array);
 
-int partition(std::vector<int>& array, int low, int high);
+void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid, int right);
 
-void quickSort(std::vector<int>& array, int low, int high);
+void mergeSort(sf::RenderWindow& window, std::vector<int>& array, int left, int right);
+
+int partition(sf::RenderWindow& window, std::vector<int>& array, int low, int high);
+
+void quickSort(sf::RenderWindow& window, std::vector<int>& array, int low, int high);
+
+int maxElement(std::vector<int> array);
+
+std::vector<int> randArray(int numElements);
+
+#endif
