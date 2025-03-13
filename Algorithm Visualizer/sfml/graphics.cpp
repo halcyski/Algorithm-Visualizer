@@ -4,8 +4,6 @@
 // draws the corresponding bars for a given set of data points 
 void drawBars(sf::RenderWindow& window, const std::vector<int>& data)
 {
-	// Clearing the window
-	window.clear();
 
 	// Dividing the window into equal amount of bars based on the size of data
 	// TODO: add padding
@@ -24,6 +22,5 @@ void drawBars(sf::RenderWindow& window, const std::vector<int>& data)
 		// Drawing each bar
 		window.draw(bar);
 	}
-	// Display whole frame
-	window.display();
+
 }

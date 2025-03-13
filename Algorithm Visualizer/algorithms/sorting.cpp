@@ -4,7 +4,7 @@
 // bubbleSort : [Vector Int]& -> Void
 // Purpose: Takes the address of an array of int elements and sorts
 // the array numerically in ascending order using a bubble sort algorithm.
-void bubbleSort(sf::RenderWindow& window, std::vector<int>& array)
+void bubbleSort(sf::RenderWindow& window, tgui::Gui& gui, std::vector<int>& array) 
 {
     // Assign an int variable equal to the size of the array, n.
     int elems = array.size();
@@ -30,7 +30,9 @@ void bubbleSort(sf::RenderWindow& window, std::vector<int>& array)
                 // A swap has occured
                 swappedFlag = true;
                 drawBars(window, array);
-                delay(0);
+                processEvents(window, gui);
+                gui.draw();
+                delay(5);
             }
         }
         // If no swaps occured (array is already sorted) then break out of the algorithm
@@ -44,7 +46,7 @@ void bubbleSort(sf::RenderWindow& window, std::vector<int>& array)
 // Purpose: merges two subarrays of the main array[]
 // The first array is array[left, mid] and the second is array[mid, right]
 // left, mid, and right are the indices of the specified arrays to merge.
-void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid, int right)
+void merge(sf::RenderWindow& window, tgui::Gui& gui, std::vector<int>& array, int left, int mid, int right)
 {
     int leftSize = mid - left + 1; // size of left side of array (left->mid)
     int rightSize = right - mid; // size of right side of array (mid->right)
@@ -71,10 +73,18 @@ void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid,
         {
             array[k] = leftArray[i];
             i++;   
+            drawBars(window, array);
+            gui.draw();
+            processEvents(window, gui);
+            delay(5);
         } else 
         {
             array[k] = rightArray[j];
             j++;
+            drawBars(window, array);
+            gui.draw();
+            processEvents(window, gui);
+            delay(5);
         }
         k++;
     } 
@@ -85,6 +95,10 @@ void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid,
         array[k] = leftArray[i];
         i++;
         k++;
+        drawBars(window, array);
+        gui.draw();
+        processEvents(window, gui);
+        delay(5);
     }
 
     // Copy any potential remaining values in rightArray[] into array[]
@@ -93,13 +107,16 @@ void merge(sf::RenderWindow& window, std::vector<int>& array, int left, int mid,
         array[k] = rightArray[j];
         j++;
         k++;
+        drawBars(window, array);
+        gui.draw();
+        delay(5);
     }
 }
 
 // mergeSort : [Vector Int]& Int Int -> Void
 // Purpose: divides an array into subarrays until they can no longer be divided
 // and merges them back together in a numerically sorted order.
-void mergeSort(sf::RenderWindow& window, std::vector<int>& array, int left, int right)
+void mergeSort(sf::RenderWindow& window, tgui::Gui& gui, std::vector<int>& array, int left, int right)
 {
     if (left >= right)
     {
@@ -108,18 +125,18 @@ void mergeSort(sf::RenderWindow& window, std::vector<int>& array, int left, int 
 
     int mid = left + (right - left) / 2;
     // Sort left size
-    mergeSort(window, array, left, mid);
+    mergeSort(window, gui, array, left, mid);
     // Sort right side
-    mergeSort(window, array, mid + 1, right);
+    mergeSort(window, gui, array, mid + 1, right);
     // Merge all
-    merge(window, array, left, mid, right);
+    merge(window, gui, array, left, mid, right);
 }
 
 
 
 // partition : [Vector Int]& Int Int -> Int
 // Purpose: returns a new pivot position from an array 
-int partition(sf::RenderWindow& window, std::vector<int>& array, int low, int high)
+int partition(sf::RenderWindow& window, tgui::Gui& gui, std::vector<int>& array, int low, int high)
 {
     // Choose the pivot
     // Some methods of choosing the pivot include:
@@ -144,28 +161,36 @@ int partition(sf::RenderWindow& window, std::vector<int>& array, int low, int hi
             int temp = array[j];
             array[j] = array[i];
             array[i] = temp;
+            drawBars(window, array);
+            gui.draw();
+            processEvents(window, gui);
+            delay(5);
         }
     }
 
     // Move pivot to after the smaller elements 
     // return its position.
     std::swap(array[i + 1], array[high]);
+    drawBars(window, array);
+    gui.draw();
+    processEvents(window, gui);
+    delay(5);
     return i + 1;
 }
 
 // quickSort : [Vector Int]& Int Int -> Void
 // Purpose: QuickSort algorithm that takes an array of data, a low and a high and sorts
 // the array using quickSort math.
-void quickSort(sf::RenderWindow& window, std::vector<int>& array, int low, int high)
+void quickSort(sf::RenderWindow& window, tgui::Gui& gui, std::vector<int>& array, int low, int high)
 {
     if (low < high)
     {
-        int partitionIndex = partition(window, array, low, high);
+        int partitionIndex = partition(window, gui, array, low, high);
 
         // Recursion calls for smaller elements
         // and greater or equal elements
-        quickSort(window, array, low, partitionIndex - 1);
-        quickSort(window, array, partitionIndex + 1, high);
+        quickSort(window, gui, array, low, partitionIndex - 1);
+        quickSort(window, gui, array, partitionIndex + 1, high);
     }
 }
 
@@ -185,18 +210,16 @@ int maxElement(std::vector<int> array)
     return largest;
 }
 
-// randArray : Int -> [Vector Int] 
+// randArray : [Vector Int] Int -> [Vector Int] 
 // takes an int representing a number of elements and returns an
 // array of integers with random values.
-std::vector<int> randArray(int numElements)
+void randArray(std::vector<int>& array, int numElements)
 {
-    std::vector<int> array = std::vector<int>(numElements);
+    array.clear(); // clear the array
     srand(time(0)); // generate random seed for rand()
 
     for (int i = 0; i < numElements; i++)
     {
-        array[i] = rand() % 500; // 1000 as a default max value
+        array.push_back(rand() % 600 + 1);
     }
-
-    return array;
 }

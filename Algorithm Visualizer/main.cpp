@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "algorithms/sorting.h"
+#include "./gui/gui.h"
+
 
 // main process entry point
 int main()
@@ -9,21 +11,30 @@ int main()
 	// Temporary Window / Gui handler. 
 	// TODO: Incorperate window states & TGUI buttons
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Algorithm Visualizer");
+	tgui::Gui gui(window);
+	initTGUI(window, gui);
 
-	// Example array
-	std::vector<int> array = randArray(100);
+	// Array to be used for sorting.
+	std::vector<int> array; 
+	connectButtonsToActions(window, gui, array); 
 
-	bubbleSort(window, array);
 	// Event Loop
-	while (window.isOpen())
+	while (window.isOpen()) 
 	{
-		sf::Event event;
-		while (window.pollEvent(event)) 
+		processEvents(window, gui);
+		window.clear();
+
+		if (!array.empty()) 
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
+			drawBars(window, array);
 		}
+
+		gui.draw();
+		window.display();
 	}
+
 	return 0;
 
 }
+
+
